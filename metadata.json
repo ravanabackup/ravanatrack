@@ -1,0 +1,6 @@
+{
+  "name": "Signal Locator",
+  "description": "Precision Bluetooth and Wi-Fi signal strength locator with Kalman filter smoothing and compass-based sensor fusion.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
