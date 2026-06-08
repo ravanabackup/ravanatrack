@@ -42,6 +42,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.model.PinnedDevice
 import com.example.model.ScannedDevice
 import com.example.service.SignalLocatorService
+import com.example.ui.GaugeTrackerScreen
 import com.example.ui.PinnedDeviceCard
 import com.example.ui.ScannedDeviceRow
 import com.example.ui.SignalRadarScope
@@ -261,13 +262,26 @@ fun MainLocatorContent(viewModel: SignalLocatorViewModel) {
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(RadarDarkBg),
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        // App header with system telemetry
+    if (targetMac != null && currentTargetDevice != null) {
+        val isPaired = pinnedDevices.any { it.macAddress == targetMac }
+        GaugeTrackerScreen(
+            device = currentTargetDevice,
+            isPaired = isPaired,
+            onBack = { viewModel.selectTargetDevice(null) },
+            onFoundIt = {
+                viewModel.selectTargetDevice(null)
+                Toast.makeText(context, "Nice! You located your device.", Toast.LENGTH_SHORT).show()
+            },
+            modifier = Modifier.fillMaxSize()
+        )
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(RadarDarkBg),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            // App header with system telemetry
         Column {
             Row(
                 modifier = Modifier
@@ -676,6 +690,7 @@ fun MainLocatorContent(viewModel: SignalLocatorViewModel) {
                 )
             )
         }
+    }
     }
 
     // SQLite Pin Register Dialog
